@@ -32,7 +32,7 @@ const applyFilter =()=>{
   let productsCopy = products.slice();
   
  if(showSearch && search){
-   productsCopy = productsCopy.filter(item => item.name.tolowercase().includes(search.tolowercase))
+   productsCopy = productsCopy.filter(item => item.name.toLowerCase().includes(search.toLowerCase()))
  }
 
 
