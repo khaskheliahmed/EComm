@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
     const [search, setSearch] = useState('');
     const [showSearch , setShowSearch] = useState(false);
     const [ cardItems, setCardItems] = useState({});
-
+    
 
 
     const addToCard = async (itemId , size) =>{
@@ -58,6 +58,30 @@ import { toast } from "react-toastify";
   }
 
 
+ const updateQuantity = async (itemId, size, quantity) => {
+  let cartData = structuredClone(cardItems);
+
+  // delete case
+  if (quantity === 0) {
+    delete cartData[itemId][size];
+
+    // agar product me koi size nahi bacha → pura product remove
+    if (Object.keys(cartData[itemId]).length === 0) {
+      delete cartData[itemId];
+    }
+
+    setCardItems(cartData);
+
+    toast.success("Item removed from cart!");
+    return;
+  }
+
+  // update quantity case
+  cartData[itemId][size] = quantity;
+  setCardItems(cartData);
+};
+
+
    //  useEffect(()=>{
    //     console.log(cardItems) 
    //  },[cardItems])
@@ -66,7 +90,7 @@ import { toast } from "react-toastify";
              products , currency , delivery_fee,
              search,setSearch,showSearch,setShowSearch,
              cardItems, addToCard, 
-             getCardCount
+             getCardCount, updateQuantity
     }         
 
     return (
