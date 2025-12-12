@@ -1,6 +1,7 @@
 import { captureOwnerStack, createContext, useEffect, useState } from "react";
 import { products } from "../assets/assets";
 import { toast } from "react-toastify";
+import Product from "../pages/Product";
 
  export const ShopContext = createContext();
 
@@ -82,6 +83,27 @@ import { toast } from "react-toastify";
 };
 
 
+
+
+const getCardAmount =  ()=>{
+   let totalAmount = 0;
+   for(const items in cardItems){
+      let itemInfo = products.find((product) => product._id === items);
+      for(const item in cardItems[items])
+         try {
+            if(cardItems[items][item] > 0 ){
+               totalAmount += itemInfo.price * cardItems[items][item]
+            }
+         } catch (error) {
+            
+         }
+   }
+
+
+   return totalAmount;
+}
+
+
    //  useEffect(()=>{
    //     console.log(cardItems) 
    //  },[cardItems])
@@ -90,7 +112,7 @@ import { toast } from "react-toastify";
              products , currency , delivery_fee,
              search,setSearch,showSearch,setShowSearch,
              cardItems, addToCard, 
-             getCardCount, updateQuantity
+             getCardCount, updateQuantity, getCardAmount
     }         
 
     return (

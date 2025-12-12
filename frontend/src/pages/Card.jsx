@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { ShopContext } from '../context/ShopContext'
 import Title from '../components/Title';
 import { assets } from '../assets/assets';
+import CartTotal from '../components/CartTotal';
 
 const Card = () => {
 
@@ -84,6 +85,15 @@ const Card = () => {
         }
       </div>
 
+
+
+
+<div className='flex justify-between my-20'>
+  <div className='w-full sm:w-[450]'>
+<CartTotal/>
+  </div>
+
+</div>
 
       {showConfirm && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 animate-fadeIn">
