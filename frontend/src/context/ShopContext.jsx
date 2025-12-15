@@ -2,6 +2,7 @@ import { captureOwnerStack, createContext, useEffect, useState } from "react";
 import { products } from "../assets/assets";
 import { toast } from "react-toastify";
 import Product from "../pages/Product";
+import { useNavigate } from "react-router-dom";
 
  export const ShopContext = createContext();
 
@@ -12,6 +13,9 @@ import Product from "../pages/Product";
     const [showSearch , setShowSearch] = useState(false);
     const [ cardItems, setCardItems] = useState({});
     
+    const navigate = useNavigate();
+
+
 
 
     const addToCard = async (itemId , size) =>{
@@ -31,7 +35,7 @@ import Product from "../pages/Product";
          }
       }else{
          cardData[itemId] = {};
-         cardData[itemId][size] = 1;
+         cardData[itemId][size] = 1;  
 
       }
       setCardItems(cardData)
@@ -112,7 +116,7 @@ const getCardAmount =  ()=>{
              products , currency , delivery_fee,
              search,setSearch,showSearch,setShowSearch,
              cardItems, addToCard, 
-             getCardCount, updateQuantity, getCardAmount
+             getCardCount, updateQuantity, getCardAmount, navigate
     }         
 
     return (
