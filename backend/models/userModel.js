@@ -1,28 +1,36 @@
 import mongoose from "mongoose";
 
-const userSchema = new mongoose.Schema({
-    name:{
-        type:String,
-        required: ture,
+const userSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
     },
-      email:{
-        type:String,
-        required:ture,
-        unique: ture,
+
+    email: {
+      type: String,
+      required: true,
+      unique: true,
     },
-      password:{
-        type:Number,
-        required:ture
+
+    password: {
+      type: String,   // ✅ bcrypt hash is STRING
+      required: true,
     },
-      cardData:{
-        type:Object,
-        required:ture,
-        default: {}
-    }
 
-},{minimize:false})
+    cartData: {        // (cardData → cartData recommended)
+      type: Object,
+      default: {},
+    },
+  },
+  {
+    minimize: false,
+    timestamps: true,
+  }
+);
 
+// ✅ Correct model creation (ESM safe)
+const userModel =
+  mongoose.models.User || mongoose.model("User", userSchema);
 
-const userModel = mongoose.model.user || mongoose.model('user' , userSchema);
-
-export default userModel
+export default userModel;

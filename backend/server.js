@@ -4,6 +4,9 @@ import dotenv from "dotenv";
 import connectDB from "./config/moongodb.js";
 import connectCloudinary from "./config/cloudinary.js";
 import UserRouter from "./routes/userRoute.js";
+import productRouter from "./routes/productRoute.js";
+
+
 dotenv.config();
 
 
@@ -19,9 +22,10 @@ app.use(express.json());
 
 // api endpoints
 app.use('/api/user',UserRouter)
+app.use('/api/product',productRouter)
 
 app.get("/", (req, res) => {
-  res.send("Backend is hello");
+  res.send("Backend is hello000000000");
 });
 
 const PORT = process.env.PORT || 4000;
