@@ -5,6 +5,7 @@ import connectDB from "./config/moongodb.js";
 import connectCloudinary from "./config/cloudinary.js";
 import UserRouter from "./routes/userRoute.js";
 import productRouter from "./routes/productRoute.js";
+import multer from "multer";
 
 
 dotenv.config();
@@ -23,7 +24,15 @@ app.use(express.json());
 // api endpoints
 app.use('/api/user',UserRouter)
 app.use('/api/product',productRouter)
-
+app.use((err, req, res, next) => {
+  if (err instanceof multer.MulterError) {
+    return res.status(400).json({
+      success: false,
+      message: err.message,
+    });
+  }
+  next(err);
+});
 app.get("/", (req, res) => {
   res.send("Backend is hello000000000");
 });
