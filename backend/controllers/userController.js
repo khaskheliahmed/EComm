@@ -64,7 +64,22 @@ const registerUser = async (req, res) => {
 
 // ADMIN LOGIN (placeholder)
 const adminLogin = async (req, res) => {
-  res.json({ message: "Admin login pending" });
+
+  try {
+    const {email, password} = req.body
+    if(email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD)
+      {
+      const token = jwt.sign(email+password,process.env.JWT_SECRET);
+      res.json({success:true,token})
+    }else{
+      res.json({success:false, message: "Invalid credentials"})
+    }
+  } catch (error) {
+    console.log(error)
+    res.json({ suucess: false, message: error.message})
+    res.json({ message: "Admin login pending" });
+  }
+  
 };
 
 export { loginUser, registerUser, adminLogin };
