@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { assets } from "../assets/assets";
 import axios from "axios";
 import { backendUrl } from "../App";
-const Add = ({token}) => {
+import { toast } from "react-toastify";
+const Add = ({ token }) => {
   // Images
   const [image1, setImage1] = useState(null);
   const [image2, setImage2] = useState(null);
@@ -30,38 +31,50 @@ const Add = ({token}) => {
   };
 
   // Submit
- const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  try {
-    const formdata = new FormData();
-    formdata.append("name", name);
-    formdata.append("description", description);
-    formdata.append("price", price);
-    formdata.append("category", category);
-formdata.append("subCategory", subCategory);
-    formdata.append("bestseller", bestseller);
-    formdata.append("sizes", JSON.stringify(sizes));
+    try {
+      const formdata = new FormData();
+      formdata.append("name", name);
+      formdata.append("description", description);
+      formdata.append("price", price);
+      formdata.append("category", category);
+      formdata.append("subCategory", subCategory);
+      formdata.append("bestseller", bestseller);
+      formdata.append("sizes", JSON.stringify(sizes));
 
-    image1 && formdata.append("image1", image1);
-    image2 && formdata.append("image2", image2);
-    image3 && formdata.append("image3", image3);
-    image4 && formdata.append("image4", image4);
+      image1 && formdata.append("image1", image1);
+      image2 && formdata.append("image2", image2);
+      image3 && formdata.append("image3", image3);
+      image4 && formdata.append("image4", image4);
 
-    const response = await axios.post(
-      backendUrl + "/api/product/add",
-      formdata,
-     {
-      headers:{token}
-     }
-    );
+      const response = await axios.post(
+        backendUrl + "/api/product/add",
+        formdata,
+        {
+          headers: { token }
+        }
+      );
 
-    console.log("SUCCESS", response.data);
+      if (response.data.success) {
+        toast.success(response.data.message)
+        setName("")
+        setDescription("")
+        setImage1(false)
+        setImage2(false)
+        setImage3(false)
+        setImage4(false)
+        setPrice('')
+      }else{
+        toast.error(response.data.message)
+      }
 
-  } catch (error) {
-    console.error("ERROR 👉", error.response?.data || error.message);
-  }
-};
+    } catch (error) {
+      console.log(error)
+      toast.error(error.message)
+    }
+  };
 
 
   return (
@@ -170,25 +183,25 @@ formdata.append("subCategory", subCategory);
         {/* Sizes */}
         <div>
           <p className="mb-2">Product sizes</p>
-         <div className="flex gap-3">
-                <div onClick={()=> setSizes(prev => prev.includes("S")? prev.filter(item =>item !== "S") : [...prev,"S"])}>
-                  <p className={` ${sizes.includes("S") ? "bg-pink-200" : "bg-gray-100-"} px-3 py-1 cursor-pointer`}>S</p>
-                </div>
+          <div className="flex gap-3">
+            <div onClick={() => setSizes(prev => prev.includes("S") ? prev.filter(item => item !== "S") : [...prev, "S"])}>
+              <p className={` ${sizes.includes("S") ? "bg-pink-200" : "bg-gray-100-"} px-3 py-1 cursor-pointer`}>S</p>
+            </div>
 
-                 <div onClick={()=> setSizes(prev => prev.includes("M")? prev.filter(item =>item !== "M") : [...prev,"M"])}>
-                  <p className={` ${sizes.includes("M") ? "bg-pink-200" : "bg-gray-100-200"} px-3 py-1 cursor-pointer`}>M</p>
-                </div>
-                 <div onClick={()=> setSizes(prev => prev.includes("L")? prev.filter(item =>item !== "L") : [...prev,"L"])}>
-                  <p className={` ${sizes.includes("L") ? "bg-pink-200" : "bg-gray-100-200"} px-3 py-1 cursor-pointer`}>L</p>
-                </div>
-                 <div onClick={()=> setSizes(prev => prev.includes("XL")? prev.filter(item =>item !== "XL") : [...prev,"XL"])}>
-                  <p className={` ${sizes.includes("XL") ? "bg-pink-200" : "bg-gray-100-200"} px-3 py-1 cursor-pointer`}>XL</p>
-                </div>
-                 <div onClick={()=> setSizes(prev => prev.includes("XXL")? prev.filter(item =>item !== "XXL") : [...prev,"XXL"])}>
-                  <p className={` ${sizes.includes("XXL") ? "bg-pink-200" : "bg-gray-50-200"} px-3 py-1 cursor-pointer`}>XXL</p>
-                </div>
-               
-         </div>
+            <div onClick={() => setSizes(prev => prev.includes("M") ? prev.filter(item => item !== "M") : [...prev, "M"])}>
+              <p className={` ${sizes.includes("M") ? "bg-pink-200" : "bg-gray-100-200"} px-3 py-1 cursor-pointer`}>M</p>
+            </div>
+            <div onClick={() => setSizes(prev => prev.includes("L") ? prev.filter(item => item !== "L") : [...prev, "L"])}>
+              <p className={` ${sizes.includes("L") ? "bg-pink-200" : "bg-gray-100-200"} px-3 py-1 cursor-pointer`}>L</p>
+            </div>
+            <div onClick={() => setSizes(prev => prev.includes("XL") ? prev.filter(item => item !== "XL") : [...prev, "XL"])}>
+              <p className={` ${sizes.includes("XL") ? "bg-pink-200" : "bg-gray-100-200"} px-3 py-1 cursor-pointer`}>XL</p>
+            </div>
+            <div onClick={() => setSizes(prev => prev.includes("XXL") ? prev.filter(item => item !== "XXL") : [...prev, "XXL"])}>
+              <p className={` ${sizes.includes("XXL") ? "bg-pink-200" : "bg-gray-50-200"} px-3 py-1 cursor-pointer`}>XXL</p>
+            </div>
+
+          </div>
         </div>
 
         {/* Bestseller */}
