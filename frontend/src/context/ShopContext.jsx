@@ -1,18 +1,18 @@
 import { captureOwnerStack, createContext, useEffect, useState } from "react";
-import { products } from "../assets/assets";
 import { toast } from "react-toastify";
 import Product from "../pages/Product";
-import { useNavigate } from "react-router-dom";
-
+import { Await, useNavigate } from "react-router-dom";
+import axiosInstance from "../utils/utils.js"
  export const ShopContext = createContext();
 
  const ShopContextProvider = (props) =>{
     const currency = '$';
     const delivery_fee = 10;
+    const backendUrl = import.meta.env.VITE_BACKEND_URL;
     const [search, setSearch] = useState('');
     const [showSearch , setShowSearch] = useState(false);
     const [ cardItems, setCardItems] = useState({});
-    
+    const [products, setProducts] = useState([]);
     const navigate = useNavigate();
 
 
@@ -108,6 +108,26 @@ const getCardAmount =  ()=>{
 }
 
 
+const getProductData = async () => {
+  try {
+    const response = await axiosInstance.get("/api/product/list");
+   if(response.data.success){
+
+   
+    setProducts(response.data.products);
+   }else{
+      toast.error(response.data.message)
+   }
+  } catch (error) {
+    console.error("API ERROR:", error);
+  }
+};
+
+
+useEffect(()=>{
+getProductData()
+},[])
+
    //  useEffect(()=>{
    //     console.log(cardItems) 
    //  },[cardItems])
@@ -116,7 +136,7 @@ const getCardAmount =  ()=>{
              products , currency , delivery_fee,
              search,setSearch,showSearch,setShowSearch,
              cardItems, addToCard, 
-             getCardCount, updateQuantity, getCardAmount, navigate
+             getCardCount, updateQuantity, getCardAmount, navigate , backendUrl
     }         
 
     return (
