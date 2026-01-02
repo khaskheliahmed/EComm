@@ -13,6 +13,7 @@ import axiosInstance from "../utils/utils.js"
     const [showSearch , setShowSearch] = useState(false);
     const [ cardItems, setCardItems] = useState({});
     const [products, setProducts] = useState([]);
+    const [token,setToken] = useState('');
     const navigate = useNavigate();
 
 
@@ -136,7 +137,8 @@ getProductData()
              products , currency , delivery_fee,
              search,setSearch,showSearch,setShowSearch,
              cardItems, addToCard, 
-             getCardCount, updateQuantity, getCardAmount, navigate , backendUrl
+             getCardCount, updateQuantity, getCardAmount, navigate ,
+              backendUrl, setToken,token
     }         
 
     return (
